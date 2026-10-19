@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>XML Book Catalogue</title>
+</head>
+<body>
+    <h1>Book Catalogue</h1>
+    <div id="book-catalogue">Loading books...</div>
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            fetch('book.xml')
+                .then(response=>{
+                    if(!response.ok){
+                        throw new Error(
+                            `HTTP error! status:${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(xmlText=>{
+                    const parser=new DOMParser();
+                    const xmlDoc=parser.parseFromString(
+                        xmlText,
+                        'text/xml');
+                    // Check whether the XML is well-formed
+                    if(xmlDoc.querySelector('parsererror')){
+                        throw new Error('Error parsing XML');
+                    }
+                    const books=xmlDoc.querySelectorAll('book');
+                    const catalogueDiv=document.getElementById('book-catalogue');
+                    if(books.length===0){
+                        catalogueDiv.textContent='No books found.';
+                        return;
+                    }
+                    const ul=document.createElement('ul');
+                    books.forEach(book=>{
+                        const title=
+                            book.querySelector('title')?.textContent ?? 'N/A';
+                        const author=
+                            book.querySelector('author')?.textContent ?? 'N/A';
+                        const price=
+                            book.querySelector('price')?.textContent ?? 'N/A';
+                        const li=document.createElement('li');
+                        const titleLine=document.createElement('div');
+                        const authorLine=document.createElement('div');
+                        const priceLine=document.createElement('div');
+                        titleLine.textContent=`Title: ${title}`;
+                        authorLine.textContent=`Author: ${author}`;
+                        priceLine.textContent=`Price: $${price}`;
+                        li.append(titleLine,authorLine,priceLine);
+                        ul.appendChild(li);
+                    });
+                    catalogueDiv.replaceChildren(ul);
+                })
+                .catch(error=>{
+                    console.error(
+                        'Failed to load or parse XML:',error
+                    );
+                    document.getElementById('book-catalogue').textContent=
+                        'Failed to load the book catalogue. '+
+                        'Please check book.xml.';
+                });
+        });
+    </script>
+</body>
+</html>

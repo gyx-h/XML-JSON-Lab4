@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- book.xml -->
+<bookstore>
+    <book id="1">
+        <title>The Adventures of Sherlock Holmes</title>
+        <author>Arthur Conan Doyle</author>
+        <price>14.99</price>
+    </book>
+    <book id="2">
+        <title>Les Misérables</title>
+        <author>Victor Hugo</author>
+        <price>18.50</price>
+    </book>
+    <book id="3">
+        <title>Gone with the Wind</title>
+        <author>Margaret Mitchell</author>
+        <price>16.99</price>
+    </book>
+    <book id="4">
+        <title>Jane Eyre</title>
+        <author>Charlotte Brontë</author>
+        <price>12.50</price>
+    </book>
+    <book id="5">
+        <title>Robinson Crusoe</title>
+        <author>Daniel Defoe</author>
+        <price>11.99</price>
+    </book>
+    <book id="6">
+        <title>Twenty Thousand Leagues Under the Sea</title>
+        <author>Jules Verne</author>
+        <price>13.99</price>
+    </book>
+</bookstore>

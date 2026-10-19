@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profiles</title>
+</head>
+<body>
+    <h1>User Profiles</h1>
+    <div id="user-profiles">Loading user profiles...</div>
+    <script>
+        document.addEventListener('DOMContentLoaded',() =>{
+            fetch('userProfiles.json')
+                .then(response=>{
+                    if(!response.ok){
+                        throw new Error(
+                            'Fetch error: '+response.status
+                        );
+                    }
+                    return response.json();
+                })
+                .then(users=>{
+                    const container=
+                        document.getElementById('user-profiles');
+                    if(!Array.isArray(users) || users.length===0){
+                        container.textContent='No user profiles found.';
+                        return;
+                    }
+                    const list=document.createElement('ul');
+                    users.forEach(user=>{
+                        const item=document.createElement('li');
+                        const details=[
+                            `First Name:${user.firstName}`,
+                            `Last Name:${user.lastName}`,
+                            `Email:${user.email}`,
+                            `Date of Birth:${user.dateOfBirth}`,
+                            `Theme:${user.preferences.theme}`,
+                            `Language:${user.preferences.language}`,
+                            `Notifications:${user.preferences.notifications}`,
+                            `Newsletter Subscription:${user.preferences.subscription}`,
+                            `Street:${user.address.street}`,
+                            `City:${user.address.city}`,
+                            `State:${user.address.state}`,
+                            `Zip Code:${user.address.zipCode}`
+                        ];
+                        details.forEach(detail=>{
+                            const line=document.createElement('p');
+                            line.textContent=detail;
+                            item.appendChild(line);
+                        });
+                        list.appendChild(item);
+                    });
+                    container.replaceChildren(list);
+                })
+                .catch(error=>{
+                    console.error('Fetch error:',error);
+                    document.getElementById('user-profiles').textContent='Error: '+error.message;
+                });
+        });
+    </script>
+</body>
+</html>
